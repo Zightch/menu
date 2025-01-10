@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "menu",
+  "version": "${version}",
+  "name": "menu",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/menu/icon.png",
+  "environment": "server",
+  "entrypoints": {
+    "main": [
+      "top.staticplant.menu.Menu"
+    ]
+  },
+  "mixins": [
+    "menu.mixins.json",
+    {
+      "config": "menu.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
