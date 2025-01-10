@@ -4,11 +4,14 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
+import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
 public class MenuCmd implements Command<ServerCommandSource> {
 
@@ -25,8 +28,8 @@ public class MenuCmd implements Command<ServerCommandSource> {
         } catch (Exception ignore) {}
         String unquoted = GlobalDataBase.unquote(option);
         if ("".equals(option) && unquoted.isEmpty()) {
-            ServerPlayerEntity player = EntityArgumentType.getPlayer(context, "target");
-            // TODO 打开客户端箱子
+            PlayerEntity player = (PlayerEntity) source.getEntity(); // 获取目标玩家
+            openMenu(player); // 打开菜单
             return Command.SINGLE_SUCCESS;
         }
         if (!unquoted.isEmpty()) option = unquoted;
@@ -36,5 +39,19 @@ public class MenuCmd implements Command<ServerCommandSource> {
         }
         // TODO 直接执行
         return Command.SINGLE_SUCCESS;
+    }
+
+    private void openMenu(PlayerEntity player) {
+        SimpleInventory inventory = new SimpleInventory(27); // 创建一个3行9列的虚拟箱子
+        // 在这里填充虚拟箱子的内容
+        inventory.setStack(0, new ItemStack(Registries.ITEM.get(Identifier.tryParse("minecraft:stone")), 1));
+
+        player.openHandledScreen(
+                new SimpleNamedScreenHandlerFactory(
+                        (syncId, inv, p) ->
+                                new MenuChestScreenHandler(syncId, inv, inventory),
+                        Text.literal("菜单")
+                )
+        );
     }
 }

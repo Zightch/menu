@@ -1,12 +1,13 @@
 package top.staticplant.menu;
 
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.slot.SlotActionType;
 
 public class MenuChestScreenHandler extends ScreenHandler {
     private final Inventory inventory;
@@ -19,7 +20,7 @@ public class MenuChestScreenHandler extends ScreenHandler {
         int i, j;
         for (i = 0; i < 3; ++i) {
             for (j = 0; j < 9; ++j) {
-                this.addSlot(new Slot(inventory, j + i * 9, 8 + j * 18, 18 + i * 18));
+                this.addSlot(new MenuSlot(inventory, j + i * 9, 8 + j * 18, 18 + i * 18));
             }
         }
 
@@ -67,6 +68,18 @@ public class MenuChestScreenHandler extends ScreenHandler {
 
     @Override
     public boolean canUse(PlayerEntity player) {
-        return this.inventory.canPlayerUse(player);
+        return inventory.canPlayerUse(player);
+    }
+
+    @Override
+    public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
+        Slot slot = this.getSlot(slotIndex);
+        if (slot != null && (slot.hasStack() & slot instanceof MenuSlot)) {
+            // 监听物品从箱子内被取出的操作
+            ItemStack stack = slot.getStack();
+            // 这里可以添加自定义逻辑，例如打印日志或触发事件
+            GlobalDataBase.LOGGER.info("物品被取出: " + stack.getItem().getName().getString());
+        }
+        super.onSlotClick(slotIndex, button, actionType, player);
     }
 }
