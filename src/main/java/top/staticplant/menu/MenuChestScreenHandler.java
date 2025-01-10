@@ -1,13 +1,7 @@
 package top.staticplant.menu;
 
-import com.mojang.brigadier.Command;
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.ParseResults;
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
@@ -15,11 +9,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.SlotActionType;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 
 public class MenuChestScreenHandler extends ScreenHandler {
@@ -71,33 +63,18 @@ public class MenuChestScreenHandler extends ScreenHandler {
             ItemStack stack = slot.getStack();
             Text nameText = stack.get(DataComponentTypes.CUSTOM_NAME);
             String name = nameText == null ? stack.getItem().getName().getString() : nameText.getString();
-            if (GlobalDataBase.config.containsKey(name))
+            if (GlobalDataBase.config.containsKey(name)) {
                 command = GlobalDataBase.config.get(name).command;
+                ((ServerPlayerEntity) player).closeHandledScreen();
+            }
         }
         super.onSlotClick(slotIndex, button, actionType, player);
 
-        // 立刻关闭界面
-        ((ServerPlayerEntity) player).closeHandledScreen();
-        // 遍历玩家背包, 删除所有menu物品
-        for (int i = 0; i < player.getInventory().size(); i++) {
-            ItemStack itemStack = player.getInventory().getStack(i);
-            if (itemStack.isEmpty())
-                continue;
-            NbtComponent nbtComponent = itemStack.get(DataComponentTypes.CUSTOM_DATA);
-            if (nbtComponent == null)
-                continue;
-            NbtCompound nbtCompound = nbtComponent.copyNbt();
-            if (nbtCompound.getBoolean("top.staticplant.menu"))
-                player.getInventory().setStack(i, ItemStack.EMPTY);
-        }
         if (!"".equals(command)) {
-            MinecraftServer server = player.getServer();
-            if (server == null) {
-                return;
-            }
-            ServerWorld world = (ServerWorld)player.getWorld();
-            CommandManager commandManager = server.getCommandManager();
-            commandManager.executeWithPrefix(player.getCommandSource(world), command);
+            ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+            CommandManager commandManager = GlobalDataBase.server.getCommandManager();
+            ServerCommandSource source = serverPlayer.getCommandSource();
+            commandManager.executeWithPrefix(source, command);
         }
     }
 }

@@ -6,11 +6,11 @@ import com.google.gson.reflect.TypeToken;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
 import net.minecraft.component.type.NbtComponent;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 public final class GlobalDataBase {
+    public static MinecraftServer server;
     public static final Logger LOGGER = LoggerFactory.getLogger("menu");
     public static final Type JSON_OBJECT_TYPE = new TypeToken<Map<String, Object>>() {} .getType();
     public static final MenuCmd MENU_COMMAND = new MenuCmd();
