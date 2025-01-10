@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class MenuCmdSuggest implements SuggestionProvider<ServerCommandSource> {
     @Override
-    public CompletableFuture<Suggestions> getSuggestions(CommandContext<ServerCommandSource> context, SuggestionsBuilder builder) throws CommandSyntaxException {
+    public CompletableFuture<Suggestions> getSuggestions(CommandContext<ServerCommandSource> context, SuggestionsBuilder builder) {
         Set<String> keys = GlobalDataBase.config.keySet();
         for (String key : keys) {
             boolean isQuoted = false;

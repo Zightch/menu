@@ -1,5 +1,6 @@
 package top.staticplant.menu;
 
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
@@ -8,6 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.SlotActionType;
+import net.minecraft.text.Text;
 
 public class MenuChestScreenHandler extends ScreenHandler {
     private final Inventory inventory;
@@ -73,12 +75,22 @@ public class MenuChestScreenHandler extends ScreenHandler {
 
     @Override
     public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
+        if (slotIndex < 0 || slotIndex >= this.slots.size()) {
+            super.onSlotClick(slotIndex, button, actionType, player);
+            return;
+        }
         Slot slot = this.getSlot(slotIndex);
         if (slot != null && (slot.hasStack() & slot instanceof MenuSlot)) {
             // 监听物品从箱子内被取出的操作
             ItemStack stack = slot.getStack();
-            // 这里可以添加自定义逻辑，例如打印日志或触发事件
-            GlobalDataBase.LOGGER.info("物品被取出: " + stack.getItem().getName().getString());
+            Text nameText = stack.get(DataComponentTypes.CUSTOM_NAME);
+            String name = nameText == null ? stack.getItem().getName().getString() : nameText.getString();
+            if (!GlobalDataBase.config.containsKey(name)) {
+                GlobalDataBase.LOGGER.info("没有找到选项: " + name);
+                super.onSlotClick(slotIndex, button, actionType, player);
+                return;
+            }
+            // TODO
         }
         super.onSlotClick(slotIndex, button, actionType, player);
     }

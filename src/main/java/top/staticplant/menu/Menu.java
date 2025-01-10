@@ -1,7 +1,6 @@
 package top.staticplant.menu;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.loader.api.FabricLoader;
@@ -10,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Menu implements ModInitializer {
 
@@ -18,9 +18,7 @@ public class Menu implements ModInitializer {
         if (!config()) {
             return;
         }
-
         CommandRegistrationCallback.EVENT.register(GlobalDataBase.MENU_COMMAND_REGISTRATION_CALLBACK);
-        GlobalDataBase.LOGGER.info("menu模组已启用");
     }
 
     boolean config() {
@@ -75,8 +73,13 @@ public class Menu implements ModInitializer {
         // 解析
         Gson gson = new Gson();
         try {
-            GlobalDataBase.config = gson.fromJson(configData, GlobalDataBase.JSON_OBJECT_TYPE);
-        } catch (JsonSyntaxException e) {
+            Map<String, Object> map = gson.fromJson(configData, GlobalDataBase.JSON_OBJECT_TYPE);
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                String jsonString = gson.toJson(entry.getValue());
+                MenuEntry menuEntry = gson.fromJson(jsonString, MenuEntry.class);
+                GlobalDataBase.config.put(entry.getKey(), menuEntry);
+            }
+        } catch (Exception e) {
             GlobalDataBase.LOGGER.error("配置文件解析失败: ", e);
             GlobalDataBase.config = new HashMap<>();
         }
