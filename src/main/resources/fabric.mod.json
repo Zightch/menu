@@ -4,10 +4,10 @@
   "version": "${version}",
   "name": "menu",
   "description": "",
-  "authors": [],
+  "authors": ["Zightch"],
   "contact": {},
   "license": "MIT",
-  "icon": "assets/menu/icon.png",
+  "icon": "",
   "environment": "server",
   "entrypoints": {
     "main": [
