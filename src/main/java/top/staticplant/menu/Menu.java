@@ -3,6 +3,7 @@ package top.staticplant.menu;
 import com.google.gson.Gson;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.IOException;
@@ -18,6 +19,9 @@ public class Menu implements ModInitializer {
         if (!config()) {
             return;
         }
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+            handler.player.currentScreenHandler.addListener(new MenuScreenHandlerListener());
+        });
         CommandRegistrationCallback.EVENT.register(GlobalDataBase.MENU_COMMAND_REGISTRATION_CALLBACK);
     }
 

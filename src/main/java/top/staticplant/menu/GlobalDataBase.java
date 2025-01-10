@@ -5,8 +5,11 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
+import net.minecraft.component.type.NbtComponent;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -63,6 +66,15 @@ public final class GlobalDataBase {
             }
             LoreComponent loreComponent = new LoreComponent(description);
             itemStack.set(DataComponentTypes.LORE, loreComponent);
+
+            // 设置自定义数据
+            NbtComponent nbtComponent = itemStack.get(DataComponentTypes.CUSTOM_DATA);
+            if (nbtComponent == null)
+                nbtComponent = NbtComponent.of(new NbtCompound());
+            NbtCompound nbtCompound = nbtComponent.copyNbt();
+            nbtCompound.putBoolean("top.staticplant.menu", true);
+            nbtComponent = NbtComponent.of(nbtCompound);
+            itemStack.set(DataComponentTypes.CUSTOM_DATA, nbtComponent);
 
             itemStacks.add(itemStack);
         }
