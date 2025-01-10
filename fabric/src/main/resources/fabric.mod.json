@@ -1,26 +1,29 @@
 {
   "schemaVersion": 1,
-  "id": "menu",
+  "id": "fabric",
   "version": "${version}",
-  "name": "menu",
+
+  "name": "fabric",
   "description": "",
-  "authors": ["Zightch"],
+  "authors": [],
   "contact": {},
+
   "license": "MIT",
   "icon": "",
+
   "environment": "server",
   "entrypoints": {
-    "main": [
-      "top.staticplant.menu.Menu"
-    ]
+    "main": ["top.staticplant.menu.Menu"]
   },
+
   "mixins": [
-    "menu.mixins.json",
-    {
-      "config": "menu.client.mixins.json",
+    "fabric.mixins.json"
+    ,{
+      "config": "fabric.client.mixins.json",
       "environment": "client"
     }
   ],
+
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric": "*",

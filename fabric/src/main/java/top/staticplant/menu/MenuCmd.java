@@ -42,7 +42,7 @@ public class MenuCmd implements Command<ServerCommandSource> {
         ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
         CommandManager commandManager = GlobalDataBase.server.getCommandManager();
         ServerCommandSource playerSource = serverPlayer.getCommandSource();
-        commandManager.executeWithPrefix(playerSource, command);
+        commandManager.executeWithPrefix(playerSource, command);;
         return Command.SINGLE_SUCCESS;
     }
 
