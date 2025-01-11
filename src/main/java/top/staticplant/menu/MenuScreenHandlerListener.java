@@ -19,7 +19,5 @@ public class MenuScreenHandlerListener implements ScreenHandlerListener {
     }
 
     @Override
-    public void onPropertyUpdate(ScreenHandler handler, int property, int value) {
-
-    }
+    public void onPropertyUpdate(ScreenHandler handler, int property, int value) {}
 }

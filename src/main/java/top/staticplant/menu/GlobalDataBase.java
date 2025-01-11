@@ -10,6 +10,7 @@ import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -30,6 +31,23 @@ public final class GlobalDataBase {
     public static final MenuCmdSuggest MENU_COMMAND_SUGGEST = new MenuCmdSuggest();
     public static final MenuCRC MENU_COMMAND_REGISTRATION_CALLBACK = new MenuCRC();
     public static Map<String, MenuEntry> config = new HashMap<>();
+    public static final ScreenHandlerType<?>[] SCREEN_HANDLER_TYPES = new ScreenHandlerType<?>[]{
+            ScreenHandlerType.GENERIC_9X1,
+            ScreenHandlerType.GENERIC_9X2,
+            ScreenHandlerType.GENERIC_9X3,
+            ScreenHandlerType.GENERIC_9X4,
+            ScreenHandlerType.GENERIC_9X5,
+            ScreenHandlerType.GENERIC_9X6
+    };
+    public static final MenuSize[] MENU_SIZES = new MenuSize[]{
+            new MenuSize(9, 1),
+            new MenuSize(9, 2),
+            new MenuSize(9, 3),
+            new MenuSize(9, 4),
+            new MenuSize(9, 5),
+            new MenuSize(9, 6)
+    };
+
     private GlobalDataBase() {}
 
     public static String quote(String input) {

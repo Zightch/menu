@@ -21,9 +21,14 @@ public class Menu implements ModInitializer {
         if (!config()) {
             return;
         }
-        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-            handler.player.currentScreenHandler.addListener(new MenuScreenHandlerListener());
-        });
+        if (GlobalDataBase.config.size() > 9 * 6) {
+            GlobalDataBase.LOGGER.info("配置的选项太多了, 超过了最大的56个, menu模组禁用");
+            return;
+        }
+        ServerPlayConnectionEvents.JOIN.register(
+                (handler, sender, server) ->
+                        handler.player.currentScreenHandler.addListener(new MenuScreenHandlerListener())
+        );
         CommandRegistrationCallback.EVENT.register(GlobalDataBase.MENU_COMMAND_REGISTRATION_CALLBACK);
     }
 
@@ -57,7 +62,7 @@ public class Menu implements ModInitializer {
                 return false;
             }
         }
-        String configData = "";
+        String configData;
         try {
             configData = Files.readString(configFile); // 尝试读取配置文件
         } catch (IOException e) {

@@ -6,6 +6,7 @@ import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.ScreenHandlerFactory;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -51,12 +52,12 @@ public class MenuCmd implements Command<ServerCommandSource> {
         SimpleInventory inventory = new SimpleInventory(itemStacks.size()); // 创建一个3行9列的虚拟箱子
         for (int i = 0; i < itemStacks.size(); i++)
             inventory.setStack(i, itemStacks.get(i));
-        player.openHandledScreen(
-                new SimpleNamedScreenHandlerFactory(
-                        (syncId, inv, p) ->
-                                new MenuChestScreenHandler(syncId, inv, inventory),
-                        Text.literal("菜单")
-                )
-        );
+        ScreenHandlerFactory screenHandlerFactory = (syncId, inv, p) -> {
+            int index = itemStacks.size() / 9;
+            int mod = itemStacks.size() % 9;
+            if (mod == 0)index--;
+            return new MenuChestScreenHandler(index, syncId, inv, inventory);
+        };
+        player.openHandledScreen(new SimpleNamedScreenHandlerFactory(screenHandlerFactory, Text.literal("菜单")));
     }
 }

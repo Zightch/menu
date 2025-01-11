@@ -3,7 +3,6 @@ package top.staticplant.menu;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
@@ -16,13 +15,13 @@ import net.minecraft.text.Text;
 
 public class MenuChestScreenHandler extends ScreenHandler {
 
-    public MenuChestScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
-        super(ScreenHandlerType.GENERIC_9X3, syncId); // 使用现有的9x3箱子类型
+    public MenuChestScreenHandler(int typeIndex, int syncId, PlayerInventory playerInventory, Inventory inventory) {
+        super(GlobalDataBase.SCREEN_HANDLER_TYPES[typeIndex], syncId); // 使用现有的9x3箱子类型
 
         // 添加箱子的槽位
         int i, j;
-        for (i = 0; i < 3; ++i) {
-            for (j = 0; j < 9; ++j) {
+        for (i = 0; i < GlobalDataBase.MENU_SIZES[typeIndex].height; ++i) {
+            for (j = 0; j < GlobalDataBase.MENU_SIZES[typeIndex].width; ++j) {
                 this.addSlot(new MenuSlot(inventory, j + i * 9, 8 + j * 18, 18 + i * 18));
             }
         }

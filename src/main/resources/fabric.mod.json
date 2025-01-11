@@ -7,7 +7,7 @@
   "authors": [],
   "contact": {},
   "license": "MIT",
-  "icon": "assets/menu-fabric/icon.png",
+  "icon": "",
   "environment": "server",
   "entrypoints": {
     "main": [
