@@ -19,7 +19,7 @@ Minecraft Server Fabric Menu mod
     <img src="img/6.png" alt=""/>
 </div>
 
-可以通过menu指令唤出菜单面板, 也可通过menu+参数来直接选择选项
+可以通过`menu`指令唤出菜单面板, 也可通过`menu+参数`来直接选择选项
 
 # 配置文件
 ```json
