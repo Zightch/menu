@@ -7,6 +7,8 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 
+import java.util.Optional;
+
 public class MenuScreenHandlerListener implements ScreenHandlerListener {
     @Override
     public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
@@ -14,7 +16,10 @@ public class MenuScreenHandlerListener implements ScreenHandlerListener {
         if (nbtComponent == null)
             return;
         NbtCompound nbtCompound = nbtComponent.copyNbt();
-        if (nbtCompound.getBoolean("top.staticplant.menu"))
+        Optional<Boolean> op = nbtCompound.getBoolean("top.staticplant.menu");
+        if (op.isEmpty())
+            return;
+        if (op.get())
             handler.getSlot(slotId).setStack(ItemStack.EMPTY); // 从玩家背包删除该物品
     }
 

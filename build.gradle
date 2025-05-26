@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.9-SNAPSHOT'
+    id 'fabric-loom' version '1.10-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -14,10 +14,16 @@ loom {
     splitEnvironmentSourceSets()
 
     mods {
-        "menu-fabric" {
+        "menu" {
             sourceSet sourceSets.main
             sourceSet sourceSets.client
         }
+    }
+}
+
+fabricApi {
+    configureDataGeneration {
+        client = true
     }
 }
 

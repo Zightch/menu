@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "menu-fabric",
+  "id": "menu",
   "version": "${version}",
-  "name": "menu-fabric",
+  "name": "menu",
   "description": "",
   "authors": [],
   "contact": {},
@@ -10,14 +10,17 @@
   "icon": "",
   "environment": "server",
   "entrypoints": {
+    "fabric-datagen": [
+      "top.staticplant.client.menuDataGenerator"
+    ],
     "main": [
       "top.staticplant.menu.Menu"
     ]
   },
   "mixins": [
-    "menu-fabric.mixins.json",
+    "menu.mixins.json",
     {
-      "config": "menu-fabric.client.mixins.json",
+      "config": "menu.client.mixins.json",
       "environment": "client"
     }
   ],
