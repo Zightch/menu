@@ -6,7 +6,7 @@ Minecraft Server Fabric Menu mod
 * 支持平台: Java
 * 运作方式: Fabric
 * 运行环境: 客户端无效, 服务器需装
-* 支持的MC版本: 1.21.4
+* 支持的MC版本: 1.21.4-1.21.5
 
 ## 效果
 
